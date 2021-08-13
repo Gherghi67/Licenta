@@ -21,7 +21,7 @@ class Report(Base):
     __tablename__ = 'report'
 
     id = Column(Integer, primary_key=True, index=True)
-    #timestamp = Column(DateTime)
+    timestamp = Column(DateTime)
     has_mask = Column(Boolean)
 
     public_place_id = Column(Integer, ForeignKey('public_place.id'))

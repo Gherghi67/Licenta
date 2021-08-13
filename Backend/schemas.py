@@ -6,8 +6,7 @@ from pydantic import BaseModel
 
 
 class ReportBase(BaseModel):
-    #timestamp: datetime
-    has_mask: bool
+    pass
 
 
 class ReportCreate(ReportBase):
@@ -17,6 +16,8 @@ class ReportCreate(ReportBase):
 class Report(ReportBase):
     id: int
     public_place_id: int
+    timestamp: datetime
+    has_mask: bool
 
     class Config:
         orm_mode = True

@@ -2,21 +2,20 @@ from sqlalchemy.orm import Session
 
 import models
 import schemas
+import datetime
+
+from check_mask import check_mask
 
 
 def get_public_place(db: Session, public_place_id: int):
-    query = db.query(models.PublicPlace).filter(
+    public_place = db.query(models.PublicPlace).filter(
         models.PublicPlace.id == public_place_id).first()
 
-    return db.execute(query)
+    return public_place
 
 
 def get_public_places(db: Session):
-    query = db.query(models.PublicPlace).all()
-
-    public_places = db.execute(query)
-
-    print(public_places)
+    public_places = db.query(models.PublicPlace).all()
 
     return public_places
 
@@ -30,3 +29,25 @@ def create_public_place(db: Session, public_place: schemas.PublicPlaceCreate):
     db.refresh(db_public_place)
 
     return db_public_place
+
+
+async def create_report(db: Session, public_place_id: int, file, model):
+    db_report = models.Report(has_mask=await check_mask(model=model, file=file),
+                              public_place_id=public_place_id,
+                              timestamp=datetime.datetime.now())
+
+    db.add(db_report)
+    db.commit()
+    db.refresh(db_report)
+
+    return db_report
+
+
+def delete_report(db: Session, report_id: int):
+    report = db.query(models.Report).filter(
+        models.Report.id == report_id).first()
+
+    db.delete(report)
+    db.commit()
+
+    return report

@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, File, UploadFile
 
 from sqlalchemy.orm import Session
 
@@ -8,9 +8,13 @@ import models
 import schemas
 from database import SessionLocal, engine
 
+from tensorflow.keras.models import load_model
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+model = load_model('../Clasificatoare/Clasificator_Wild')
 
 
 def get_db():
@@ -22,11 +26,15 @@ def get_db():
         db.close()
 
 
+@app.get('/')
+def hello_world():
+    return{'hello': 'world'}
+
+
 @app.get('/public-places/', response_model=List[schemas.PublicPlace])
 def get_public_places(db: Session = Depends(get_db)):
     public_places = crud.get_public_places(db=db)
-    print(public_places)
-    return {"public_places": public_places}
+    return public_places
 
 
 @app.get('/public-places/{public_place_id}', response_model=schemas.PublicPlace)
@@ -39,3 +47,15 @@ def get_public_place(public_place_id: int, db: Session = Depends(get_db)):
 @app.post('/public-places/', response_model=schemas.PublicPlace)
 def create_public_place(public_place: schemas.PublicPlaceCreate, db: Session = Depends(get_db)):
     return crud.create_public_place(db=db, public_place=public_place)
+
+
+@app.post('/public-places/{public_place_id}/reports', response_model=schemas.Report)
+async def create_report(public_place_id: int, db: Session = Depends(get_db),
+                        file: UploadFile = File(...)):
+    return await crud.create_report(db=db, public_place_id=public_place_id,
+                                    file=file, model=model)
+
+
+@app.delete('/public-places/reports/{report_id}/', response_model=schemas.Report)
+def delete_report(report_id: int, db: Session = Depends(get_db)):
+    return crud.delete_report(db=db, report_id=report_id)
