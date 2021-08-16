@@ -11,8 +11,7 @@ class Resource<T> {
 class WebService {
   Future<T> load<T>(Resource<T> resource) async {
     final response = await http.get(Uri.parse(resource.url), headers: {
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      // Required for cookies, authorization headers with HTTPS
+      "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
           "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS"

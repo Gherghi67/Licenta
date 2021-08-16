@@ -15,7 +15,7 @@ class Report {
     return Report(
       id: json['id'],
       publicPlaceId: json['public_place_id'],
-      timestamp: json['timestamp'],
+      timestamp: DateTime.parse(json['timestamp']),
       hasMask: json['has_mask'],
     );
   }

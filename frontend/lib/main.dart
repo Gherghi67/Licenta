@@ -43,10 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _populatePublicPlaces() {
-    WebService().load(PublicPlace.all).then((publicPlaces) => {
-          setState(() => {_publicPlaces = publicPlaces}),
-          print(_publicPlaces),
-        });
+    WebService().load(PublicPlace.all).then((publicPlaces) {
+      setState(() => {_publicPlaces = publicPlaces});
+    });
   }
 
   void _incrementCounter() {

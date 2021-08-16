@@ -23,9 +23,9 @@ class PublicPlace {
       id: json['id'],
       name: json['name'],
       owner: json['owner'],
-      reports: (jsonDecode(json['reports']) as List)
-          .map((report) => Report.fromJson(report))
-          .toList(),
+      reports: List<Report>.from(
+        json['reports'].map((report) => Report.fromJson(report)),
+      ),
     );
   }
 
@@ -35,9 +35,12 @@ class PublicPlace {
         parse: (response) {
           final result = json.decode(response.body);
 
-          return result
-              .map((publicPlace) => PublicPlace.fromJson(publicPlace))
-              .toList();
+          final List<PublicPlace> resultsList =
+              List<PublicPlace>.from(result.map((publicPlace) {
+            return PublicPlace.fromJson(publicPlace);
+          }).toList());
+
+          return resultsList;
         });
   }
 }
