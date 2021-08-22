@@ -17,7 +17,6 @@ class Report(ReportBase):
     id: int
     public_place_id: int
     timestamp: datetime
-    has_mask: bool
 
     class Config:
         orm_mode = True
@@ -26,6 +25,8 @@ class Report(ReportBase):
 class PublicPlaceBase(BaseModel):
     name: str
     owner: str
+    address: str
+    max_capacity: int
 
 
 class PublicPlaceCreate(PublicPlaceBase):

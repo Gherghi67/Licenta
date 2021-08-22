@@ -13,6 +13,8 @@ class PublicPlace(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     owner = Column(String)
+    address = Column(String)
+    max_capacity = Column(Integer)
 
     reports = relationship('Report', back_populates='public_place')
 
@@ -22,7 +24,6 @@ class Report(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     timestamp = Column(DateTime)
-    has_mask = Column(Boolean)
 
     public_place_id = Column(Integer, ForeignKey('public_place.id'))
 

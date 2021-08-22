@@ -22,7 +22,7 @@ def get_public_places(db: Session):
 
 def create_public_place(db: Session, public_place: schemas.PublicPlaceCreate):
     db_public_place = models.PublicPlace(
-        name=public_place.name, owner=public_place.owner)
+        name=public_place.name, owner=public_place.owner, address=public_place.address, max_capacity=public_place.max_capacity)
 
     db.add(db_public_place)
     db.commit()
@@ -32,15 +32,18 @@ def create_public_place(db: Session, public_place: schemas.PublicPlaceCreate):
 
 
 async def create_report(db: Session, public_place_id: int, file, model):
-    db_report = models.Report(has_mask=await check_mask(model=model, file=file),
-                              public_place_id=public_place_id,
-                              timestamp=datetime.datetime.now())
+    has_mask = await check_mask(model=model, file=file)
 
-    db.add(db_report)
-    db.commit()
-    db.refresh(db_report)
+    if (has_mask == False):
+        db_report = models.Report(
+            public_place_id=public_place_id,
+            timestamp=datetime.datetime.now())
 
-    return db_report
+        db.add(db_report)
+        db.commit()
+        db.refresh(db_report)
+
+        return db_report
 
 
 def delete_report(db: Session, report_id: int):
