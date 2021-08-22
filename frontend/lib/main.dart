@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/list-widget.dart';
 import 'services/web-service.dart';
 import 'models/public-place.dart';
 
@@ -32,20 +33,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  List<PublicPlace> _publicPlaces = [];
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    _populatePublicPlaces();
-  }
-
-  void _populatePublicPlaces() {
-    WebService().load(PublicPlace.all).then((publicPlaces) {
-      setState(() => {_publicPlaces = publicPlaces});
-    });
   }
 
   void _incrementCounter() {
@@ -57,27 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: PublicPlacesList(),
       appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        title: Text('Locuri publice'),
       ),
     );
   }

@@ -5,9 +5,11 @@ import './report.dart';
 
 class PublicPlace {
   final int id;
+  final int maxCapacity;
 
   final String name;
   final String owner;
+  final String address;
 
   final List<Report> reports;
 
@@ -16,6 +18,8 @@ class PublicPlace {
     required this.name,
     required this.owner,
     required this.reports,
+    required this.address,
+    required this.maxCapacity,
   });
 
   factory PublicPlace.fromJson(Map<String, dynamic> json) {
@@ -23,24 +27,11 @@ class PublicPlace {
       id: json['id'],
       name: json['name'],
       owner: json['owner'],
+      address: json['address'],
+      maxCapacity: json['max_capacity'],
       reports: List<Report>.from(
         json['reports'].map((report) => Report.fromJson(report)),
       ),
     );
-  }
-
-  static Resource<List<PublicPlace>> get all {
-    return Resource(
-        url: 'http://127.0.0.1:8000/public-places/',
-        parse: (response) {
-          final result = json.decode(response.body);
-
-          final List<PublicPlace> resultsList =
-              List<PublicPlace>.from(result.map((publicPlace) {
-            return PublicPlace.fromJson(publicPlace);
-          }).toList());
-
-          return resultsList;
-        });
   }
 }
