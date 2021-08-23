@@ -43,7 +43,9 @@ async def create_report(db: Session, public_place_id: int, file, model):
         db.commit()
         db.refresh(db_report)
 
-        return db_report
+        return schemas.Response(has_mask=False)
+
+    return schemas.Response(has_mask=True)
 
 
 def delete_report(db: Session, report_id: int):

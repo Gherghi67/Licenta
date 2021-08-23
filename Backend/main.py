@@ -53,9 +53,10 @@ def create_public_place(public_place: schemas.PublicPlaceCreate, db: Session = D
     return crud.create_public_place(db=db, public_place=public_place)
 
 
-@ app.post('/public-places/{public_place_id}/reports', response_model=schemas.Report)
+@ app.post('/public-places/{public_place_id}/reports', response_model=schemas.Response)
 async def create_report(public_place_id: int, db: Session = Depends(get_db),
                         file: UploadFile = File(...)):
+    print(public_place_id)
     return await crud.create_report(db=db, public_place_id=public_place_id,
                                     file=file, model=model)
 

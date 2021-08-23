@@ -39,3 +39,7 @@ class PublicPlace(PublicPlaceBase):
 
     class Config:
         orm_mode = True
+
+
+class Response(BaseModel):
+    has_mask: bool

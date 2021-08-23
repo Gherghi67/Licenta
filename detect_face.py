@@ -11,7 +11,7 @@ face_cascade = cv2.CascadeClassifier(
     './utils/haarcascade_frontalface_alt2.xml')
 
 # Read the input image
-img = cv2.imread('./test_images/fara_masca_alba.jpg')
+img = cv2.imread('./test_images/vecinu_cu_masca.jpg')
 
 img = imutils.resize(img, width=500)
 
